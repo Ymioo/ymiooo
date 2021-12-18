@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>todolist页面</title>
+    <link rel="stylesheet" href="index.css">
+    <script src="../js/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <header>
+			<section>
+					<label for="title">ToDoList</label>
+					<input type="text" id="title" name="title" placeholder="添加ToDo"@keydown.enter.prevent="add" required="required" autocomplete="off">
+			</section>
+        </header>   
+        <section>
+            <h2 onclick="save()">正在进行 <span id="todocount">0</span></h2>
+            <ol id="todolist" class="demo-box"></ol>
+            <h2>已经完成 <span id="donecount">0</span></h2>
+            <ul id="donelist"></ul>
+        </section>
+	
+
+    </div>
+
+    <script type="text/javascript">
+        /***
+         * 设置思路：数据 title, list[{title,suc}],seiItem:{}]
+         * */
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                title: '', //临时的标题，用于数据处理
+                list: [],   //所有的待办事项数据
+                selItem: {} //要修改的待办事项
+
+            },
+            //计算属性
+            computed:{
+                doList(){
+                    ruturn this.list.filter(item=>!item.suc)
+                },
+                
+
+
+            }
+            //事件对应的处理方法
+            methods:{
+                
+                //添加待办事项条目信息
+                add(){
+                    if(this.title!=''){
+                        this.list.push({
+                            title:this.title,
+                            suc:false
+                        })
+                        this.title=''
+                    }
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>
