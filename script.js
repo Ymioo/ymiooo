@@ -1,56 +1,45 @@
-let todoItems = [];
-//存放待办事项
-let finishedItems = [];
-//存放已完成的盒子id
+
+let todoItems = [];//定义一个列表，存放待办事项
+
+let finishedItems = [];//存放已完成的事项
 
 function renderTodoItemList(todoItems, finishedItems) {
-    //对代办事项的操作
-
+    //对待办事项的操作
+    //待办事项的放置
     let paneEl = document.querySelector("#todolist > .list-pane");
-    //querySelector是找节点的js内置函数
+    //查询节点函数querySelector
     paneEl.innerHTML = "";
 
     for (let i=0; i < todoItems.length; i++ ) {
         let item = todoItems[i];
-        //console.log(item);
         let itemDiv = document.createElement("div");
         //创建div节点
         itemDiv.className = "todo-item";
 
-        itemDiv.id="c"+ i;
-    
+        itemDiv.className = "todo-item";
+
         let inputEl = document.createElement("input");
-        //设置勾选位置
+        //对完成事件的打勾选项
         inputEl.type = "checkbox";
-        //用来打勾
 
         inputEl.addEventListener("change", (e) => {
+            //完成的事项
             finishedItems.push(item);
-            //
-            var  flag=document.getElementById('boxs'+i).checked;
-            if (flag){
-                document.getElementById(i).style.color="blue"
-                //打勾后按钮就失效
-                document.getElementById('boxs'+i).disabled=true
-                };
-                finishedid.push("boxs"+i);
-                console.log(finishedid);
+            todoItems.splice(i, 1);
+            //删除完成的事项
 
-            
+            console.log("finshed:", i, todoItems, finishedItems );
+            renderTodoItemList(todoItems, finishedItems);
+
         });
 
         let titleEl = document.createElement("div");
         titleEl.className = "title";
-        titleEl.className="title";
-        titleEl.id=i;
 
-        //感叹号打勾字体变红
         let importanceEl = document.createElement("div");
+        //事件重要程度
         importanceEl.className = "important-flag"
         importanceEl.innerText = "!";
-        importanceEl.id="a"+i;
-
-    
 
         if (item.isImportance) {
             importanceEl.classList.add("open");
@@ -70,8 +59,23 @@ function renderTodoItemList(todoItems, finishedItems) {
         let deleteBtn = document.createElement("button");
         deleteBtn.innerText = "X";
 
-        titleEl.innerText = item.title;
+        deleteBtn.addEventListener("click",(e)=>{
+            todoItems.splice(i,1)
+            renderTodoItemList(todoItems,finishedItems);
+            //删除事项
 
+        });
+
+        titleEl.addEventListener("click",(e)=>{
+            //更改事项
+            let changeE1 = prompt("换个什么任务嘞:","");
+            titleEl.innerText= changeE1;
+            todoItems[i]= changeE1.value;
+            console.log(i);
+        });
+
+        titleEl.innerText = item.title;
+        //往itemDiv加入节点
         itemDiv.append(inputEl);
         itemDiv.append(titleEl);
         itemDiv.append(importanceEl);
@@ -113,8 +117,6 @@ function renderFinishedItemList(todoItems, finishedItems) {
     }
 
 }
-
-
 function renderInputPane(todoItems) {
     let inputPaneEl = document.querySelector("#todolist > .input-pane");
 
@@ -144,8 +146,8 @@ function renderInputPane(todoItems) {
         }
     });
 
-    // let btnEl = document.querySelector("#todolist #add-btn");
 }
+
 
 renderInputPane(todoItems, finishedItems);
 renderTodoItemList(todoItems, finishedItems);
